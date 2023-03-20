@@ -3,7 +3,6 @@ image: ubuntu
 stages:
   - run
   
-
 before_script:
   - apt-get update -qq
   - apt-get install -qq git
