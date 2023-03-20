@@ -1,7 +1,6 @@
 image: ubuntu
 
 stages:
-  # - test
   - run
 
 before_script:
