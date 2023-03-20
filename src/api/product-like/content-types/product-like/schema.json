@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_likes",
+  "info": {
+    "singularName": "product-like",
+    "pluralName": "product-likes",
+    "displayName": "Product Like",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "productId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::product.product",
+      "inversedBy": "productLikeId"
+    },
+    "userId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "productLike"
+    }
+  }
+}
