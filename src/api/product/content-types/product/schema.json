@@ -1,0 +1,61 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "text"
+    },
+    "price": {
+      "type": "string"
+    },
+    "img": {
+      "type": "text"
+    },
+    "dicription": {
+      "type": "text"
+    },
+    "status": {
+      "type": "string"
+    },
+    "productLikeId": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::product-like.product-like",
+      "mappedBy": "productId"
+    },
+    "commentId": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "productId"
+    },
+    "userId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "product"
+    },
+    "reports": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::report.report",
+      "mappedBy": "product"
+    },
+    "categogy_detail": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::categogy-detail.categogy-detail",
+      "mappedBy": "product"
+    }
+  }
+}

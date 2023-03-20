@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categogy_details",
+  "info": {
+    "singularName": "categogy-detail",
+    "pluralName": "categogy-details",
+    "displayName": "Categogy Detail",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "categogy_details"
+    },
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product",
+      "inversedBy": "categogy_detail"
+    }
+  }
+}
