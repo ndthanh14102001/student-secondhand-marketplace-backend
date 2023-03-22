@@ -17,6 +17,6 @@ backend:
   stage: run
   script:
     # - ssh trandotrungkien34@35.240.158.158 "cd flea_market && git checkout develop && git pull && docker compose -f docker-compose.yml up --build -d && docker image prune --force && exit"
-     - ssh trandotrungkien34@35.240.158.158 "cd flea_market && git checkout develop && git pull && npm install && npm run build && npm run start"
+     - ssh trandotrungkien34@35.240.158.158 "cd flea_market && git checkout develop && git pull && npm install && npm run build"
   only:
     - develop
