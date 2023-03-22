@@ -1,0 +1,18 @@
+version: '3'
+services:
+  assetsman:
+    container_name: flea-market-backend
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: production
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    networks:
+      - backend
+networks:
+  backend:
+    name: backend
