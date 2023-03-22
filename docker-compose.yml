@@ -1,6 +1,6 @@
 version: '3'
 services:
-  assetsman:
+  flea-market:
     container_name: flea-market-backend
     restart: always
     build:
