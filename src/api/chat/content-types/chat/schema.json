@@ -4,7 +4,8 @@
   "info": {
     "singularName": "chat",
     "pluralName": "chats",
-    "displayName": "Chat"
+    "displayName": "Chat",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -15,10 +16,16 @@
       "type": "text"
     },
     "receiver": {
-      "type": "text"
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "chats"
     },
     "sender": {
-      "type": "text"
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "chats"
     }
   }
 }

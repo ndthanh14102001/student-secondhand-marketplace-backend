@@ -4,7 +4,8 @@
   "info": {
     "singularName": "category",
     "pluralName": "categories",
-    "displayName": "Category"
+    "displayName": "Category",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,14 +18,33 @@
     "description": {
       "type": "text"
     },
-    "image": {
-      "type": "text"
+    "parent": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category",
+      "inversedBy": "children"
     },
-    "categogy_details": {
+    "children": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category",
+      "inversedBy": "parent"
+    },
+    "products": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::categogy-detail.categogy-detail",
+      "target": "api::product.product",
       "mappedBy": "category"
+    },
+    "image": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": true
     }
   }
 }

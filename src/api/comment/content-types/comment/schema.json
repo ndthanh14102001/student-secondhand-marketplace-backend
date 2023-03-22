@@ -15,17 +15,17 @@
     "description": {
       "type": "string"
     },
-    "userId": {
+    "user": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "comments"
     },
-    "productId": {
+    "product": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::product.product",
-      "inversedBy": "commentId"
+      "inversedBy": "comments"
     }
   }
 }

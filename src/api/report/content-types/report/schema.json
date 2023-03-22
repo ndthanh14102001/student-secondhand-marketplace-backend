@@ -12,9 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Reporter": {
-      "type": "text"
-    },
     "userReported": {
       "type": "text"
     },
@@ -29,6 +26,12 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::product.product",
+      "inversedBy": "reports"
+    },
+    "reporter": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
       "inversedBy": "reports"
     }
   }
