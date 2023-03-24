@@ -1,18 +1,40 @@
 version: '3'
 services:
-  flea-market:
+  flea-market-backend:
     container_name: flea-market-backend
-    restart: always
+    restart: unless-stopped
+    env_file:
+      - .env
     build:
       dockerfile: Dockerfile
       context: .
       target: production
-    env_file:
-      - .env
+      args:
+        NODE_ENV: ${NODE_ENV}
+    image: strapi:latest
+    environment:
+      DATABASE_CLIENT: ${DATABASE_CLIENT}
+      DATABASE_HOST: ${DATABASE_HOST}
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      APP_KEYS: ${APP_KEYS}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - ./config:/opt/app/config
+      - ./src:/opt/app/src
+      - ./package.json:/opt/package.json
+      - ./yarn.lock:/opt/yarn.lock
+      - ./.env:/opt/app/.env
+      - ./public/uploads:/opt/app/public/uploads
     ports:
       - '3000:3000'
     networks:
-      - backend
+      - strapi
 networks:
-  backend:
-    name: backend
+  strapi:
+    name: Strapi
+    driver: bridge
