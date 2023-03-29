@@ -69,19 +69,13 @@
     "productLike": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::product-like.product-like",
-      "mappedBy": "userId"
+      "target": "api::product.product",
+      "mappedBy": "userLike"
     },
     "product": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::product.product",
-      "mappedBy": "userId"
-    },
-    "comments": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::comment.comment",
       "mappedBy": "userId"
     },
     "phone": {
@@ -98,6 +92,24 @@
     },
     "address": {
       "type": "string"
+    },
+    "reports": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::report.report",
+      "mappedBy": "reporter"
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
+      "mappedBy": "user"
+    },
+    "chats": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::chat.chat",
+      "mappedBy": "sender"
     }
   }
 }

@@ -18,26 +18,11 @@
     "price": {
       "type": "string"
     },
-    "img": {
-      "type": "text"
-    },
     "dicription": {
       "type": "text"
     },
     "status": {
       "type": "string"
-    },
-    "productLikeId": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product-like.product-like",
-      "mappedBy": "productId"
-    },
-    "commentId": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::comment.comment",
-      "mappedBy": "productId"
     },
     "userId": {
       "type": "relation",
@@ -51,10 +36,33 @@
       "target": "api::report.report",
       "mappedBy": "product"
     },
-    "categogy_detail": {
+    "userLike": {
       "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::categogy-detail.categogy-detail",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "productLike"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "products"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "comments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::comment.comment",
       "mappedBy": "product"
     }
   }
