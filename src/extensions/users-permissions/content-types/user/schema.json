@@ -81,9 +81,6 @@
     "phone": {
       "type": "string"
     },
-    "avatar": {
-      "type": "string"
-    },
     "fullName": {
       "type": "string"
     },
@@ -110,6 +107,16 @@
       "relation": "oneToMany",
       "target": "api::chat.chat",
       "mappedBy": "sender"
+    },
+    "avatar": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

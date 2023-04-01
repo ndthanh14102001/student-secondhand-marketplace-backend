@@ -15,12 +15,6 @@
     "name": {
       "type": "text"
     },
-    "price": {
-      "type": "string"
-    },
-    "dicription": {
-      "type": "text"
-    },
     "status": {
       "type": "string"
     },
@@ -64,6 +58,12 @@
       "relation": "oneToMany",
       "target": "api::comment.comment",
       "mappedBy": "product"
+    },
+    "price": {
+      "type": "float"
+    },
+    "description": {
+      "type": "text"
     }
   }
 }
