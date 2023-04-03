@@ -15,9 +15,6 @@
     "name": {
       "type": "text"
     },
-    "status": {
-      "type": "string"
-    },
     "userId": {
       "type": "relation",
       "relation": "manyToOne",
@@ -29,12 +26,6 @@
       "relation": "oneToMany",
       "target": "api::report.report",
       "mappedBy": "product"
-    },
-    "userLike": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "productLike"
     },
     "category": {
       "type": "relation",
@@ -64,6 +55,20 @@
     },
     "description": {
       "type": "text"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "onSale",
+        "Sold"
+      ],
+      "default": "onSale"
+    },
+    "userLikes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "product_likes"
     }
   }
 }

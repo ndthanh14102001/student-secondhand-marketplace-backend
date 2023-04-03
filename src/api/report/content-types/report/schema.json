@@ -12,9 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "userReported": {
-      "type": "text"
-    },
     "type": {
       "type": "enumeration",
       "enum": [
@@ -33,6 +30,12 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "reports"
+    },
+    "accused": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "accuseds"
     }
   }
 }
