@@ -114,3 +114,8 @@ exports
 dist
 build
 .strapi-updater.json
+
+############################
+# Docker Compose
+############################
+data
