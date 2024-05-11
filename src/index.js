@@ -33,11 +33,7 @@ module.exports = {
       console.log("connect", userId);
       socket.join(`${userId}`);
       socket.on("private message", async (data) => {
-        console.log("userId", userId);
-        // console.log("socket", socket);
-        // Listening for a sendMessage connection
         let strapiData = {
-          // Generating the message data to be stored in Strapi
           data: {
             from: userId,
             to: data.to,
@@ -45,14 +41,10 @@ module.exports = {
           },
         };
         var axios = require("axios");
-        console.log("axios", axios);
-
-        axios
+        await axios
           .post(`${process.env.API_ENDPOINT}/chats`, strapiData) //Storing the messages in Strapi
           .then((e) => {
-            console.log("data.to", data.to);
             io.to(`${data.to}`).emit("private message", {
-              //Sending the message to the to user
               from: {
                 id: userId,
               },
