@@ -17,55 +17,49 @@ module.exports = {
    * run jobs, or perform some special logic.
    */
   bootstrap(/* { strapi } */) {
-    console.log("env", process.env);
+    const jwtDecode = require("jwt-decode");
     //strapi.server.httpServer is the new update for Strapi V4
     var io = require("socket.io")(strapi.server.httpServer, {
       cors: {
         // cors setup
-        origin: "http://localhost:3000",
+        origin: process.env.CLIENT_ENDPOINT,
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true,
       },
     });
-    io.on("connect", function (socket) {
-      //Listening for a connection from the frontend
-      socket.on("join", ({ username }) => {
-        // Listening for a join connection
-        console.log("user connected");
-        console.log("username is ", username);
-        if (username) {
-          socket.join("group"); // Adding the user to the group
-          socket.emit("welcome", {
-            // Sending a welcome message to the User
-            user: "bot",
-            text: `${username}, Welcome to the group chat`,
-            userData: username,
-          });
-        } else {
-          console.log("An error occurred");
-        }
-      });
+    io.on("connection", function (socket) {
+      const userId = jwtDecode.jwtDecode(socket?.handshake?.auth?.token)?.id;
+      console.log("connect", userId);
+      socket.join(`${userId}`);
       socket.on("private message", async (data) => {
+        console.log("userId", userId);
+        // console.log("socket", socket);
         // Listening for a sendMessage connection
         let strapiData = {
           // Generating the message data to be stored in Strapi
           data: {
-            from: data.from,
+            from: userId,
             to: data.to,
             content: data.content,
           },
         };
-        console.log("data", data);
-        console.log("env", process.env.API_ENDPOINT);
         var axios = require("axios");
-        await axios
-          .post(`${process.env.API_ENDPOINT}/messages`, strapiData) //Storing the messages in Strapi
+        console.log("axios", axios);
+
+        axios
+          .post(`${process.env.API_ENDPOINT}/chats`, strapiData) //Storing the messages in Strapi
           .then((e) => {
-            socket.broadcast.to("group").emit("message", {
-              //Sending the message to the group
-              user: data.username,
-              text: data.message,
+            console.log("data.to", data.to);
+            io.to(`${data.to}`).emit("private message", {
+              //Sending the message to the to user
+              from: {
+                id: userId,
+              },
+              to: {
+                id: data.to,
+              },
+              content: data.content,
             });
           })
           .catch((e) => console.log("error", e.message));
