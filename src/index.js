@@ -44,6 +44,7 @@ module.exports = {
         await axios
           .post(`${process.env.API_ENDPOINT}/chats`, strapiData)
           .then((e) => {
+            console.log("sendata to ", data.to);
             io.to(`${data.to}`).emit("private message", {
               from: {
                 id: userId,
