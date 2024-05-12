@@ -35,14 +35,14 @@ module.exports = {
       socket.on("private message", async (data) => {
         let strapiData = {
           data: {
-            from: userId,
-            to: data.to,
-            content: data.content,
+            sender: userId,
+            receiver: data.to,
+            message: data.content,
           },
         };
         var axios = require("axios");
         await axios
-          .post(`${process.env.API_ENDPOINT}/chats`, strapiData) //Storing the messages in Strapi
+          .post(`${process.env.API_ENDPOINT}/chats`, strapiData)
           .then((e) => {
             io.to(`${data.to}`).emit("private message", {
               from: {
