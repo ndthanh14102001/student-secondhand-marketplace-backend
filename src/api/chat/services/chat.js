@@ -16,6 +16,15 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
       });
     return count;
   },
+  async findChatsByUserId(userId, queryParams) {
+    const entry = await strapi.db.query("api::chat.chat").findMany({
+      where: {
+        receiver: userId,
+      },
+      ...queryParams,
+    });
+    return entry;
+  },
   async findUnreadChatsByUserId(userId) {
     const entry = await strapi.db.query("api::chat.chat").findMany({
       where: {
@@ -44,5 +53,38 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
       promises.push(this.markMessageAsSeen(chat?.id));
     }
     await Promise.all(promises);
+  },
+  async getPartner(userId) {
+    const chats = await this.findChatsByUserId(userId, {
+      populate: ["sender"],
+    });
+    const userIds = new Set();
+    for (let index = 0; index < chats.length; index++) {
+      const sender = chats[index]?.sender;
+      userIds.add(sender?.id);
+    }
+    const users = await strapi.db
+      .query("plugin::users-permissions.user")
+      .findMany({
+        where: {
+          id: {
+            $in: Array.from(userIds),
+          },
+        },
+        populate: {
+          avatar: true,
+          // get all unread chats
+          chats: {
+            where: {
+              hasBeenSeen: {
+                $eq: false,
+              },
+            },
+            select: ["id"],
+          },
+        },
+        select: ["id", "username", "fullName"],
+      });
+    return users;
   },
 }));

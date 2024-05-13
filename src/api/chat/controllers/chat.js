@@ -28,4 +28,11 @@ module.exports = createCoreController("api::chat.chat", ({ strapi }) => ({
       },
     };
   },
+  async getPartner(ctx) {
+    const userId = ctx.state.auth.credentials?.id;
+    const partner = await strapi.service("api::chat.chat").getPartner(userId);
+    return {
+      data: partner,
+    };
+  },
 }));

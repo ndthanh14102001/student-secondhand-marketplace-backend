@@ -10,6 +10,11 @@ module.exports = {
       method: 'PATCH',
       path: '/chats/read',
       handler: 'chat.readChats',
-    }
+    },
+    { 
+      method: 'GET',
+      path: '/chats/partners',
+      handler: 'chat.getPartner',
+    },
   ]
 }
