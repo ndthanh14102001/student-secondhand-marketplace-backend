@@ -894,6 +894,7 @@ export interface ApiChatChat extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    hasBeenSeen: Attribute.Boolean & Attribute.DefaultTo<false>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

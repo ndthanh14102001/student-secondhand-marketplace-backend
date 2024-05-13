@@ -26,6 +26,10 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "chats"
+    },
+    "hasBeenSeen": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

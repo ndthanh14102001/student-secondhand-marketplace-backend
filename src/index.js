@@ -22,7 +22,7 @@ module.exports = {
     var io = require("socket.io")(strapi.server.httpServer, {
       cors: {
         // cors setup
-        origin: process.env.CLIENT_ENDPOINT,
+        origin: "*",
         methods: ["GET", "POST"],
         allowedHeaders: ["my-custom-header"],
         credentials: true,
@@ -40,20 +40,21 @@ module.exports = {
             message: data.content,
           },
         };
+        console.log("sendata to ", data.to);
+        io.to(`${data.to}`).emit("private message", {
+          from: {
+            id: userId,
+          },
+          to: {
+            id: data.to,
+          },
+          content: data.content,
+        });
         var axios = require("axios");
         await axios
           .post(`${process.env.API_ENDPOINT}/chats`, strapiData)
           .then((e) => {
-            console.log("sendata to ", data.to);
-            io.to(`${data.to}`).emit("private message", {
-              from: {
-                id: userId,
-              },
-              to: {
-                id: data.to,
-              },
-              content: data.content,
-            });
+           
           })
           .catch((e) => console.log("error", e.message));
       });
