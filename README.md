@@ -1,5 +1,5 @@
 # Node version 
-">=18.0.0 <=20.x.x"
+\>=18.0.0 <=20.x.x
 
 # Run the project
 1. Run `npm install` to install all package 
