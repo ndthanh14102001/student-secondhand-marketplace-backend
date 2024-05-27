@@ -35,4 +35,16 @@ module.exports = createCoreController("api::chat.chat", ({ strapi }) => ({
       data: partner,
     };
   },
+  async markMessagesAsSeen(ctx) {
+    const userId = ctx.state.auth.credentials?.id;
+    const { senderId } = ctx.params;
+    await strapi
+      .service("api::chat.chat")
+      .markMessagesAsSeen(senderId, userId);
+    return {
+      data: {
+        message: "Update successfully !",
+      },
+    };
+  },
 }));

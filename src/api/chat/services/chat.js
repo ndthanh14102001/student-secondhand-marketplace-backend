@@ -34,16 +34,31 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
     });
     return entry;
   },
-  async markMessageAsSeen(chatId) {
-    const entry = await strapi.db.query("api::chat.chat").update({
-      where: {
-        id: chatId,
-      },
-      data: {
-        hasBeenSeen: true,
-      },
-    });
-    return entry;
+  async markMessagesAsSeen(senderId, receiverId) {
+    while (true) {
+      const entry = await strapi.db.query("api::chat.chat").update({
+        where: {
+          $and: [
+            {
+              sender: senderId,
+            },
+            {
+              receiver: receiverId,
+            },
+            {
+              hasBeenSeen: false,
+            },
+          ],
+        },
+        data: {
+          hasBeenSeen: true,
+        },
+      });
+      console.log("entry", entry);
+      if (!entry) {
+        break;
+      }
+    }
   },
   async markUserMessagesAsSeen(userId) {
     const unreadChats = await this.findUnreadChatsByUserId(userId);
@@ -79,6 +94,7 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
               hasBeenSeen: {
                 $eq: false,
               },
+              receiver: userId,
             },
             select: ["id"],
           },

@@ -6,10 +6,15 @@ module.exports = {
       path: '/chats/unread/count',
       handler: 'chat.countUnreadChat',
     },
+    // { 
+    //   method: 'PATCH',
+    //   path: '/chats/read',
+    //   handler: 'chat.readChats',
+    // },
     { 
       method: 'PATCH',
-      path: '/chats/read',
-      handler: 'chat.readChats',
+      path: '/chats/read/:senderId',
+      handler: 'chat.markMessagesAsSeen',
     },
     { 
       method: 'GET',

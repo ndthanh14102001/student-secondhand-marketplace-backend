@@ -16,7 +16,7 @@ module.exports = {
    * This gives you an opportunity to set up your data model,
    * run jobs, or perform some special logic.
    */
-  bootstrap(/* { strapi } */) {
+  bootstrap({ strapi }) {
     const jwtDecode = require("jwt-decode");
     //strapi.server.httpServer is the new update for Strapi V4
     var io = require("socket.io")(strapi.server.httpServer, {
@@ -30,17 +30,8 @@ module.exports = {
     });
     io.on("connection", function (socket) {
       const userId = jwtDecode.jwtDecode(socket?.handshake?.auth?.token)?.id;
-      console.log("connect", userId);
       socket.join(`${userId}`);
       socket.on("private message", async (data) => {
-        let strapiData = {
-          data: {
-            sender: userId,
-            receiver: data.to,
-            message: data.content,
-          },
-        };
-        console.log("sendata to ", data.to);
         io.to(`${data.to}`).emit("private message", {
           from: {
             id: userId,
@@ -50,13 +41,16 @@ module.exports = {
           },
           content: data.content,
         });
-        var axios = require("axios");
-        await axios
-          .post(`${process.env.API_ENDPOINT}/chats`, strapiData)
-          .then((e) => {
-           
-          })
-          .catch((e) => console.log("error", e.message));
+        let strapiData = {
+          data: {
+            sender: userId,
+            receiver: data.to,
+            message: data.content,
+            hasBeenSeen: false,
+            publishedAt: Date.now(),
+          },
+        };
+        await strapi.db.query("api::chat.chat").create(strapiData);
       });
     });
   },
