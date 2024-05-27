@@ -16,15 +16,6 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
       });
     return count;
   },
-  async findChatsByUserId(userId, queryParams) {
-    const entry = await strapi.db.query("api::chat.chat").findMany({
-      where: {
-        receiver: userId,
-      },
-      ...queryParams,
-    });
-    return entry;
-  },
   async findUnreadChatsByUserId(userId) {
     const entry = await strapi.db.query("api::chat.chat").findMany({
       where: {
