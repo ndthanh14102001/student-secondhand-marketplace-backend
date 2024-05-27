@@ -70,37 +70,25 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
     await Promise.all(promises);
   },
   async getPartner(userId) {
-    const chats = await this.findChatsByUserId(userId, {
-      populate: ["sender"],
-    });
-    const userIds = new Set();
-    for (let index = 0; index < chats.length; index++) {
-      const sender = chats[index]?.sender;
-      userIds.add(sender?.id);
-    }
-    const users = await strapi.db
-      .query("plugin::users-permissions.user")
-      .findMany({
-        where: {
-          id: {
-            $in: Array.from(userIds),
-          },
-        },
-        populate: {
-          avatar: true,
-          // get all unread chats
-          chats: {
-            where: {
-              hasBeenSeen: {
-                $eq: false,
-              },
-              receiver: userId,
-            },
-            select: ["id"],
-          },
-        },
-        select: ["id", "username", "fullName"],
-      });
-    return users;
+    const { rows} = await strapi.db.connection.raw(`
+    select chats_sender_links.user_id, 
+      up_users.username, 
+      up_users.full_name, 
+      MAX(chats.created_at) as lastMessageTime,
+      count(case when chats.has_been_seen = false THEN 1 END) AS seenCount
+    from chats, 
+      chats_receiver_links, 
+      chats_sender_links, 
+      up_users
+    where chats.id = chats_receiver_links.chat_id
+      and chats.id = chats_sender_links.chat_id
+      and chats_receiver_links.user_id = ${userId}
+      and up_users.id = chats_sender_links.user_id
+    group by chats_sender_links.user_id, 
+      up_users.username, 
+      up_users.full_name
+    order by lastMessageTime DESC;
+    `);
+    return rows;
   },
 }));
