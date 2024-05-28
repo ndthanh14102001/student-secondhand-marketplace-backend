@@ -15,12 +15,6 @@
     "name": {
       "type": "text"
     },
-    "userId": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "product"
-    },
     "reports": {
       "type": "relation",
       "relation": "oneToMany",
@@ -69,6 +63,12 @@
       "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
       "mappedBy": "product_likes"
+    },
+    "userId": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "product"
     }
   }
 }

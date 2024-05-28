@@ -742,7 +742,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -783,7 +782,7 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
     >;
     phone: Attribute.String;
     fullName: Attribute.String;
-    university: Attribute.String;
+    universityId: Attribute.String;
     address: Attribute.String;
     reports: Attribute.Relation<
       'plugin::users-permissions.user',
@@ -959,11 +958,6 @@ export interface ApiProductProduct extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.Text;
-    userId: Attribute.Relation<
-      'api::product.product',
-      'manyToOne',
-      'plugin::users-permissions.user'
-    >;
     reports: Attribute.Relation<
       'api::product.product',
       'oneToMany',
@@ -987,6 +981,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
     userLikes: Attribute.Relation<
       'api::product.product',
       'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    userId: Attribute.Relation<
+      'api::product.product',
+      'manyToOne',
       'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;

@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -84,7 +83,7 @@
     "fullName": {
       "type": "string"
     },
-    "university": {
+    "universityId": {
       "type": "string"
     },
     "address": {
