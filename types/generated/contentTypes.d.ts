@@ -805,6 +805,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'oneToMany',
       'api::report.report'
     >;
+    followers: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    user_followed: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<

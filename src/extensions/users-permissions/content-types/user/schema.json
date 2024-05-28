@@ -123,6 +123,18 @@
       "relation": "oneToMany",
       "target": "api::report.report",
       "mappedBy": "accused"
+    },
+    "followers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_followed"
+    },
+    "user_followed": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "followers"
     }
   }
 }
