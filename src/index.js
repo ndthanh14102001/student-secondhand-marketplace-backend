@@ -1,5 +1,9 @@
 "use strict";
-
+function setUpConstants({ strapi }) {
+  strapi.constants = {};
+  strapi.constants.NOTIFICATION_NEW_PRODUCT_TYPE = 1;
+  strapi.constants.NOTIFICATION_NEW_COMMENT_TYPE = 2;
+} 
 module.exports = {
   /**
    * An asynchronous register function that runs before
@@ -7,7 +11,9 @@ module.exports = {
    *
    * This gives you an opportunity to extend code.
    */
-  register(/*{ strapi }*/) {},
+  register({ strapi }) {
+    setUpConstants({ strapi });
+  },
 
   /**
    * An asynchronous bootstrap function that runs before
@@ -28,6 +34,7 @@ module.exports = {
         credentials: true,
       },
     });
+    strapi.webSocket = io;
     io.on("connection", function (socket) {
       const userId = jwtDecode.jwtDecode(socket?.handshake?.auth?.token)?.id;
       socket.join(`${userId}`);

@@ -815,6 +815,16 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'plugin::users-permissions.user'
     >;
+    sended_notifications: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToMany',
+      'api::notification.notification'
+    >;
+    received_notifications: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::notification.notification'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -955,6 +965,52 @@ export interface ApiCommentComment extends Schema.CollectionType {
   };
 }
 
+export interface ApiNotificationNotification extends Schema.CollectionType {
+  collectionName: 'notifications';
+  info: {
+    singularName: 'notification';
+    pluralName: 'notifications';
+    displayName: 'Notification';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    receivers: Attribute.Relation<
+      'api::notification.notification',
+      'manyToMany',
+      'plugin::users-permissions.user'
+    >;
+    sender: Attribute.Relation<
+      'api::notification.notification',
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
+    type: Attribute.Integer;
+    product: Attribute.Relation<
+      'api::notification.notification',
+      'manyToOne',
+      'api::product.product'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::notification.notification',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiProductProduct extends Schema.CollectionType {
   collectionName: 'products';
   info: {
@@ -997,6 +1053,11 @@ export interface ApiProductProduct extends Schema.CollectionType {
       'api::product.product',
       'manyToOne',
       'plugin::users-permissions.user'
+    >;
+    notifications: Attribute.Relation<
+      'api::product.product',
+      'oneToMany',
+      'api::notification.notification'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
@@ -1083,6 +1144,7 @@ declare module '@strapi/types' {
       'api::category.category': ApiCategoryCategory;
       'api::chat.chat': ApiChatChat;
       'api::comment.comment': ApiCommentComment;
+      'api::notification.notification': ApiNotificationNotification;
       'api::product.product': ApiProductProduct;
       'api::report.report': ApiReportReport;
     }
