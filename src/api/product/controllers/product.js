@@ -17,6 +17,7 @@ async function createNotification({ ctx, productId }) {
       sender: sender,
       type: strapi.constants.NOTIFICATION_NEW_PRODUCT_TYPE,
       product: productId,
+      readUsers: [],
       publishedAt: Date.now(),
     },
     populate: { sender: true, product: true },

@@ -32,6 +32,12 @@
       "relation": "manyToOne",
       "target": "api::product.product",
       "inversedBy": "notifications"
+    },
+    "readUsers": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "read_notifications"
     }
   }
 }

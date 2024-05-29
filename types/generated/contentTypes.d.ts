@@ -825,6 +825,11 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToMany',
       'api::notification.notification'
     >;
+    read_notifications: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'manyToMany',
+      'api::notification.notification'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -992,6 +997,11 @@ export interface ApiNotificationNotification extends Schema.CollectionType {
       'api::notification.notification',
       'manyToOne',
       'api::product.product'
+    >;
+    readUsers: Attribute.Relation<
+      'api::notification.notification',
+      'manyToMany',
+      'plugin::users-permissions.user'
     >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

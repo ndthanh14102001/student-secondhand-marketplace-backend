@@ -147,6 +147,12 @@
       "relation": "manyToMany",
       "target": "api::notification.notification",
       "mappedBy": "receivers"
+    },
+    "read_notifications": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::notification.notification",
+      "mappedBy": "readUsers"
     }
   }
 }
