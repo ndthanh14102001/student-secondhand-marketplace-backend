@@ -5,14 +5,14 @@
  */
 
 const { createCoreController } = require("@strapi/strapi").factories;
-const getReadNotificationsByUserId = async (ctx) => {
+const getUnReadNotificationsByUserId = async (ctx) => {
   const userId = ctx.state.auth.credentials?.id;
   return await strapi
     .service("api::notification.notification")
-    .getReadNotificationsByUserId({ userId });
+    .getUnReadNotificationsByUserId({ userId });
 };
 const customizeControllers = ({
-  getReadNotificationsByUserId
+  getUnReadNotificationsByUserId
 });
 module.exports = createCoreController(
   "api::notification.notification",

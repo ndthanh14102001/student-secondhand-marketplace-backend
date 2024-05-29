@@ -5,7 +5,8 @@
  */
 
 const { createCoreService } = require("@strapi/strapi").factories;
-const getReadNotificationsByUserId = async ({ userId }) => {
+const getUnReadNotificationsByUserId = async ({ userId }) => {
+  console.log("userId",userId)
   const entry = await strapi.db
     .query("api::notification.notification")
     .findMany({
@@ -18,7 +19,7 @@ const getReadNotificationsByUserId = async ({ userId }) => {
           },
           {
             readUsers: {
-              $in: [userId],
+              $notIn: [userId],
             },
           },
         ],
@@ -28,7 +29,7 @@ const getReadNotificationsByUserId = async ({ userId }) => {
   return entry;
 };
 const customizeServices = () => ({
-  getReadNotificationsByUserId,
+  getUnReadNotificationsByUserId,
 });
 module.exports = createCoreService(
   "api::notification.notification",

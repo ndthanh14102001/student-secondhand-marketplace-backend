@@ -11,20 +11,26 @@ async function createNotification({ ctx, productId }) {
   const followerIds = followers?.map((follower) => {
     return follower?.id;
   });
-  const entry = await strapi.db.query("api::notification.notification").create({
-    data: {
-      receivers: followerIds,
-      sender: sender,
-      type: strapi.constants.NOTIFICATION_NEW_PRODUCT_TYPE,
-      product: productId,
-      readUsers: [],
-      publishedAt: Date.now(),
-    },
-    populate: { sender: true, product: true },
-  });
-  for (let index = 0; index < followerIds?.length; index++) {
-    const followerId = followerIds[index];
-    sendNotificationToSocket({ userId: followerId, data: entry });
+  console.log("sender",sender)
+  console.log("followerIds",followerIds)
+  if (followerIds?.length > 0) {
+    const entry = await strapi.db
+      .query("api::notification.notification")
+      .create({
+        data: {
+          receivers: followerIds,
+          sender: sender,
+          type: strapi.constants.NOTIFICATION_NEW_PRODUCT_TYPE,
+          product: productId,
+          readUsers: [],
+          publishedAt: Date.now(),
+        },
+        populate: { sender: true, product: true },
+      });
+    for (let index = 0; index < followerIds?.length; index++) {
+      const followerId = followerIds[index];
+      sendNotificationToSocket({ userId: followerId, data: entry });
+    }
   }
 }
 async function getFollowersByUserId(userId) {
