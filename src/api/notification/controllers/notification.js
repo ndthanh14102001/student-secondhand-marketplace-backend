@@ -11,9 +11,20 @@ const getUnReadNotificationsByUserId = async (ctx) => {
     .service("api::notification.notification")
     .getUnReadNotificationsByUserId({ userId });
 };
-const customizeControllers = ({
-  getUnReadNotificationsByUserId
-});
+const readNotification = async (ctx) => {
+  const userId = ctx.state.auth.credentials?.id;
+  const { notificationId } = ctx.params;
+  await strapi
+    .service("api::notification.notification")
+    .readNotification({ userId, notificationId });
+  return {
+    message: "Read notification sucessfully",
+  };
+};
+const customizeControllers = {
+  getUnReadNotificationsByUserId,
+  readNotification,
+};
 module.exports = createCoreController(
   "api::notification.notification",
   customizeControllers
