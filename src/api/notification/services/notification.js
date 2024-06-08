@@ -20,7 +20,7 @@ const getUnReadNotificationsByUserId = async ({ userId }) => {
 };
 async function readNotification({ userId, notificationId }) {
   const notification = await getNotificationById(notificationId);
-  console.log("notification", notification);
+
   if (!isRead({ notification, userId })) {
     const readUserIds = notification?.readUsers?.map((user) => {
       return user?.id;

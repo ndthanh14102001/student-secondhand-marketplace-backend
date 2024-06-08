@@ -8,8 +8,7 @@ const { createCoreController } = require("@strapi/strapi").factories;
 async function createNotification({ ctx, productId }) {
   const sender = ctx.state.auth.credentials?.id;
   const followers = await getFollowersByUserId(sender);
-  console.log("followers",followers)
-  console.log("sender",sender)
+
   const followerIds = followers?.map((follower) => {
     return follower?.id;
   });

@@ -45,7 +45,7 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
           hasBeenSeen: true,
         },
       });
-      console.log("entry", entry);
+      
       if (!entry) {
         break;
       }
