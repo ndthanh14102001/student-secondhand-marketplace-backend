@@ -8,11 +8,11 @@ const { createCoreController } = require("@strapi/strapi").factories;
 async function createNotification({ ctx, productId }) {
   const sender = ctx.state.auth.credentials?.id;
   const followers = await getFollowersByUserId(sender);
+  console.log("followers",followers)
+  console.log("sender",sender)
   const followerIds = followers?.map((follower) => {
     return follower?.id;
   });
-  console.log("sender",sender)
-  console.log("followerIds",followerIds)
   if (followerIds?.length > 0) {
     const entry = await strapi.db
       .query("api::notification.notification")
@@ -25,7 +25,12 @@ async function createNotification({ ctx, productId }) {
           readUsers: [],
           publishedAt: Date.now(),
         },
-        populate: { sender: true, product: true },
+        populate: {
+          sender: {
+            populate: ["avatar"],
+          },
+          product: true,
+        },
       });
     for (let index = 0; index < followerIds?.length; index++) {
       const followerId = followerIds[index];
