@@ -54,9 +54,23 @@ function isRead({ notification, userId }) {
   }
   return false;
 }
+async function readAllNotifications({ userId }) {
+  const unreadNotifications = await getUnReadNotificationsByUserId({ userId });
+  const promises = [];
+  if (unreadNotifications?.length > 0) {
+    for (let index = 0; index < unreadNotifications.length; index++) {
+      const unreadNotification = unreadNotifications[index];
+      promises.push(
+        readNotification({ userId, notificationId: unreadNotification?.notification_id })
+      );
+    }
+    await Promise.all(promises);
+  }
+}
 const customizeServices = () => ({
   getUnReadNotificationsByUserId,
   readNotification,
+  readAllNotifications,
 });
 module.exports = createCoreService(
   "api::notification.notification",

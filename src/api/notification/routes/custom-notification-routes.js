@@ -11,5 +11,10 @@ module.exports = {
       path: '/read/notification/:notificationId',
       handler: 'notification.readNotification',
     },
+    { 
+      method: 'PATCH',
+      path: '/read/notifications',
+      handler: 'notification.readAllNotifications',
+    },
   ]
 }
