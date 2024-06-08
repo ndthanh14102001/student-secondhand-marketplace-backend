@@ -1,9 +1,18 @@
 "use strict";
 function setUpConstants({ strapi }) {
-  strapi.constants = {};
-  strapi.constants.NOTIFICATION_NEW_PRODUCT_TYPE = 1;
-  strapi.constants.NOTIFICATION_NEW_COMMENT_TYPE = 2;
-} 
+  strapi.constants = {
+    NOTIFICATION_NEW_PRODUCT_TYPE: 1,
+    NOTIFICATION_NEW_COMMENT_TYPE: 2,
+  };
+}
+function sendNotificationToSocket({ userId, data }) {
+  strapi.webSocket.to(`${userId}`).emit("notification", data);
+}
+function setUpCommonFunctions({ strapi }) {
+  strapi.commonFunctions = {
+    sendNotificationToSocket,
+  };
+}
 module.exports = {
   /**
    * An asynchronous register function that runs before
@@ -13,6 +22,7 @@ module.exports = {
    */
   register({ strapi }) {
     setUpConstants({ strapi });
+    setUpCommonFunctions({ strapi });
   },
 
   /**

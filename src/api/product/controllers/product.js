@@ -33,7 +33,7 @@ async function createNotification({ ctx, productId }) {
       });
     for (let index = 0; index < followerIds?.length; index++) {
       const followerId = followerIds[index];
-      sendNotificationToSocket({ userId: followerId, data: entry });
+      strapi.commonFunctions.sendNotificationToSocket({ userId: followerId, data: entry });
     }
   }
 }
@@ -47,9 +47,6 @@ async function getFollowersByUserId(userId) {
   return user?.followers || [];
 }
 
-function sendNotificationToSocket({ userId, data }) {
-  strapi.webSocket.to(`${userId}`).emit("notification", data);
-}
 const customizeControllers = ({ strapi }) => {
   return {
     async create(ctx) {
