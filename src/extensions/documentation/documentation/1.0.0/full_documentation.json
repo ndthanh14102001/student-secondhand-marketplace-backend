@@ -14,7 +14,7 @@
       "name": "Apache 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
     },
-    "x-generation-date": "2024-06-08T11:41:43.034Z"
+    "x-generation-date": "2024-06-09T16:03:41.584Z"
   },
   "x-strapi-config": {
     "path": "/documentation",
@@ -1685,6 +1685,16 @@
                                           }
                                         }
                                       },
+                                      "processingStatus": {
+                                        "type": "string",
+                                        "enum": [
+                                          "Uncomplete",
+                                          "Complete"
+                                        ]
+                                      },
+                                      "description": {
+                                        "type": "string"
+                                      },
                                       "createdAt": {
                                         "type": "string",
                                         "format": "date-time"
@@ -3175,6 +3185,16 @@
                                                         }
                                                       }
                                                     }
+                                                  },
+                                                  "processingStatus": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Uncomplete",
+                                                      "Complete"
+                                                    ]
+                                                  },
+                                                  "description": {
+                                                    "type": "string"
                                                   },
                                                   "createdAt": {
                                                     "type": "string",
@@ -5432,6 +5452,16 @@
                                                         }
                                                       }
                                                     }
+                                                  },
+                                                  "processingStatus": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                      "Uncomplete",
+                                                      "Complete"
+                                                    ]
+                                                  },
+                                                  "description": {
+                                                    "type": "string"
                                                   },
                                                   "createdAt": {
                                                     "type": "string",
@@ -7713,6 +7743,16 @@
                                                           }
                                                         }
                                                       }
+                                                    },
+                                                    "processingStatus": {
+                                                      "type": "string",
+                                                      "enum": [
+                                                        "Uncomplete",
+                                                        "Complete"
+                                                      ]
+                                                    },
+                                                    "description": {
+                                                      "type": "string"
                                                     },
                                                     "createdAt": {
                                                       "type": "string",
@@ -11573,6 +11613,16 @@
                             }
                           }
                         },
+                        "processingStatus": {
+                          "type": "string",
+                          "enum": [
+                            "Uncomplete",
+                            "Complete"
+                          ]
+                        },
+                        "description": {
+                          "type": "string"
+                        },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time"
@@ -11994,6 +12044,16 @@
                   }
                 ],
                 "example": "string or id"
+              },
+              "processingStatus": {
+                "type": "string",
+                "enum": [
+                  "Uncomplete",
+                  "Complete"
+                ]
+              },
+              "description": {
+                "type": "string"
               }
             }
           }
@@ -13528,6 +13588,16 @@
                                         }
                                       }
                                     },
+                                    "processingStatus": {
+                                      "type": "string",
+                                      "enum": [
+                                        "Uncomplete",
+                                        "Complete"
+                                      ]
+                                    },
+                                    "description": {
+                                      "type": "string"
+                                    },
                                     "createdAt": {
                                       "type": "string",
                                       "format": "date-time"
@@ -14165,6 +14235,16 @@
                 }
               }
             }
+          },
+          "processingStatus": {
+            "type": "string",
+            "enum": [
+              "Uncomplete",
+              "Complete"
+            ]
+          },
+          "description": {
+            "type": "string"
           },
           "createdAt": {
             "type": "string",

@@ -36,6 +36,16 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "accuseds"
+    },
+    "processingStatus": {
+      "type": "enumeration",
+      "enum": [
+        "Uncomplete",
+        "Complete"
+      ]
+    },
+    "description": {
+      "type": "text"
     }
   }
 }

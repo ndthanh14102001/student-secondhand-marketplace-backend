@@ -61,25 +61,40 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
     await Promise.all(promises);
   },
   async getPartner(userId) {
-    const { rows} = await strapi.db.connection.raw(`
+    let { rows} = await strapi.db.connection.raw(`
     select chats_sender_links.user_id, 
       up_users.username, 
       up_users.full_name, 
+	    files.formats as avatar,
       MAX(chats.created_at) as lastMessageTime,
       count(case when chats.has_been_seen = false THEN 1 END) AS seenCount
     from chats, 
       chats_receiver_links, 
       chats_sender_links, 
-      up_users
+      up_users,
+	    files_related_morphs,
+	    files
     where chats.id = chats_receiver_links.chat_id
       and chats.id = chats_sender_links.chat_id
       and chats_receiver_links.user_id = ${userId}
       and up_users.id = chats_sender_links.user_id
+	    and files_related_morphs.related_type = 'plugin::users-permissions.user'
+	    and files_related_morphs.related_id = up_users.id
+	    and files.id = files_related_morphs.file_id
     group by chats_sender_links.user_id, 
       up_users.username, 
-      up_users.full_name
-    order by lastMessageTime DESC;
+      up_users.full_name,
+	    files.formats
+    order by lastMessageTime DESC
     `);
+    rows = rows?.map((row) => {
+      return {
+        ...row,
+        avatar: {
+          formats : JSON.parse(row?.avatar)
+        }
+      }
+    })
     return rows;
   },
 }));

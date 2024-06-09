@@ -1115,6 +1115,8 @@ export interface ApiReportReport extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.user'
     >;
+    processingStatus: Attribute.Enumeration<['Uncomplete', 'Complete']>;
+    description: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

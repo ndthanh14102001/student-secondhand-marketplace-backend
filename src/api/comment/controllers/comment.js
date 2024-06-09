@@ -8,15 +8,6 @@ const { createCoreController } = require("@strapi/strapi").factories;
 async function createNotification({ ctx, product }) {
   const sender = ctx.state.auth.credentials?.id;
   const productOwner = product?.userId?.id;
-  console.log("product", product);
-  console.log({
-    receivers: [productOwner],
-    sender: sender,
-    type: strapi.constants.NOTIFICATION_NEW_COMMENT_TYPE,
-    product: product?.id,
-    readUsers: [],
-    publishedAt: Date.now(),
-  });
   const entry = await strapi.db.query("api::notification.notification").create({
     data: {
       receivers: [productOwner],

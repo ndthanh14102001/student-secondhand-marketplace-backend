@@ -1,19 +1,19 @@
 module.exports = ({ env }) => ({
   email: {
     config: {
-      provider: 'nodemailer',
+      provider: "nodemailer",
       providerOptions: {
-        host: env('SMTP_HOST', 'smtp.gmail.com'),
-        port: env('SMTP_PORT', 587),
+        host: env("SMTP_HOST", "smtp.gmail.com"),
+        port: env("SMTP_PORT", 587),
         auth: {
-          user: "ndthanh14102001@gmail.com",
-          pass: "voigrrtowzsbjzjn",
+          user: env("EMAIL_USER", ""),
+          pass: env("EMAIL_PASS", ""),
         },
         // ... any custom nodemailer options
       },
       settings: {
-        defaultFrom: 'ndthanh14102001@gmail.com',
-        defaultReplyTo: 'ndthanh14102001@gmail.com',
+        defaultFrom: env("EMAIL_USER", ""),
+        defaultReplyTo: env("EMAIL_USER", ""),
       },
     },
   },
