@@ -62,30 +62,66 @@ module.exports = createCoreService("api::chat.chat", ({ strapi }) => ({
   },
   async getPartner(userId) {
     let { rows} = await strapi.db.connection.raw(`
-    select chats_sender_links.user_id, 
-      up_users.username, 
-      up_users.full_name, 
-	    files.formats as avatar,
-      MAX(chats.created_at) as lastMessageTime,
-      count(case when chats.has_been_seen = false THEN 1 END) AS seenCount
-    from chats, 
-      chats_receiver_links, 
-      chats_sender_links, 
-      up_users,
-	    files_related_morphs,
-	    files
-    where chats.id = chats_receiver_links.chat_id
-      and chats.id = chats_sender_links.chat_id
-      and chats_receiver_links.user_id = ${userId}
-      and up_users.id = chats_sender_links.user_id
-	    and files_related_morphs.related_type = 'plugin::users-permissions.user'
-	    and files_related_morphs.related_id = up_users.id
-	    and files.id = files_related_morphs.file_id
-    group by chats_sender_links.user_id, 
-      up_users.username, 
-      up_users.full_name,
-	    files.formats
-    order by lastMessageTime DESC
+    WITH all_chats AS (
+        SELECT 
+            c.id, 
+            cs.user_id AS sender_id, 
+            cr.user_id AS receiver_id, 
+            c.has_been_seen,
+        c.created_at
+        FROM 
+            chats c
+        JOIN 
+            chats_sender_links cs ON c.id = cs.chat_id
+        JOIN 
+            chats_receiver_links cr ON c.id = cr.chat_id
+    ),
+    partners as (
+    SELECT 
+        sender_id AS user_id, 
+        COUNT(CASE WHEN has_been_seen = false THEN 1 END) AS seenCount,
+        MAX(all_chats.created_at) as lastMessageTime
+    FROM 
+        all_chats
+    WHERE 
+        receiver_id = ${userId}
+    GROUP BY 
+        sender_id
+    UNION 
+    SELECT 
+        receiver_id AS user_id, 
+        0 AS seenCount,
+      MAX(all_chats.created_at) as lastMessageTime
+    FROM 
+        all_chats
+    WHERE 
+        sender_id = ${userId}
+    GROUP BY 
+        receiver_id
+    ), avatars as (
+    select *
+    from files_related_morphs,
+      files
+    where files_related_morphs.related_type = 'plugin::users-permissions.user'
+      and files.id = files_related_morphs.file_id
+    )
+    select pa.user_id,
+      MAX(pa.seenCount) as seenCount,
+      MAX(lastMessageTime) as lastMessageTime,
+      us.username,
+      us.full_name,
+      av.formats as avatar
+    from partners as pa
+      left join avatars as av 
+        on av.related_id = pa.user_id
+      left join up_users as us 
+        on pa.user_id = us.id
+    GROUP BY 
+      pa.user_id,
+      us.username,
+      us.full_name,
+      av.formats
+    ORDER BY lastMessageTime DESC
     `);
     rows = rows?.map((row) => {
       return {
